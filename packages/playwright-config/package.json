@@ -1,0 +1,13 @@
+{
+  "name": "@flodoc/playwright-config",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./playwright.base.ts",
+  "exports": {
+    ".": "./playwright.base.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0"
+  }
+}

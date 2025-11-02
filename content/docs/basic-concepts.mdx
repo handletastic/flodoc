@@ -1,0 +1,64 @@
+---
+title: Basic Concepts
+description: Learn the core concepts of Flodoc
+slug: basic-concepts
+tags: [tutorial, concepts]
+connections:
+  - type: prerequisite
+    target: getting-started
+  - type: next
+    target: creating-documents
+  - type: related
+    target: document-connections
+---
+
+# Basic Concepts
+
+Understanding the core concepts of Flodoc will help you create better documentation.
+
+## Documents
+
+Each document in Flodoc is written in MDX format. MDX allows you to:
+
+- Write standard Markdown content
+- Import and use React components
+- Include interactive examples
+- Add custom styling
+
+## Frontmatter
+
+Every document includes frontmatter metadata:
+
+```yaml
+---
+title: Your Document Title
+description: Brief description
+slug: url-friendly-slug
+tags: [category1, category2]
+connections:
+  - type: next
+    target: next-document-slug
+---
+```
+
+## Connection Types
+
+Flodoc supports several types of document connections:
+
+- **prerequisite**: Documents that should be read first
+- **next**: The logical next document to read
+- **related**: Documents on related topics
+- **seealso**: Additional resources
+
+## Visualization
+
+All these connections are visualized in the Flow Graph, making it easy to:
+
+- Understand documentation structure
+- Find related content
+- Navigate learning paths
+- Identify gaps in documentation
+
+## Next Steps
+
+Learn how to [Create Documents](/docs/creating-documents) or explore [Document Connections](/docs/document-connections).

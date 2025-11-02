@@ -1,0 +1,31 @@
+{
+  "name": "flodoc",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "bun --filter web dev",
+    "build": "bun --filter web build",
+    "preview": "bun --filter web preview",
+    "typecheck": "bun --filter '*' typecheck",
+    "lint": "bun --filter '*' lint",
+    "clean": "bun --filter '*' clean",
+    "test:e2e": "bun --filter web test:e2e",
+    "test:e2e:ui": "bun --filter web test:e2e:ui",
+    "test:e2e:headed": "bun --filter web test:e2e:headed",
+    "test:e2e:coverage": "bun --filter web test:e2e:coverage",
+    "test:e2e:update-snapshots": "bun --filter web test:e2e:update-snapshots",
+    "test:report": "bun --filter web test:e2e:report",
+    "test:show-trace": "cd apps/web/e2e && npx playwright show-trace",
+    "test:show-report": "open apps/web/e2e/playwright-report/index.html",
+    "test:show-coverage": "open apps/web/e2e/test-results/monocart-report.html",
+    "test:install-browsers": "cd apps/web/e2e && npx playwright install --with-deps"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.3.3"
+  }
+}

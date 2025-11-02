@@ -1,0 +1,80 @@
+---
+title: Creating Documents
+description: Learn how to create and structure documentation
+slug: creating-documents
+tags: [tutorial, authoring]
+connections:
+  - type: prerequisite
+    target: basic-concepts
+  - type: related
+    target: document-connections
+  - type: related
+    target: mdx-components
+---
+
+# Creating Documents
+
+Learn how to create effective documentation with Flodoc.
+
+## Creating a New Document
+
+1. Create a new `.mdx` file in the `content/docs/` directory
+2. Add frontmatter metadata
+3. Write your content using Markdown and MDX
+4. Define connections to other documents
+
+## Example Document
+
+```mdx
+---
+title: My New Document
+description: A brief description
+slug: my-new-document
+tags: [guide]
+connections:
+  - type: next
+    target: another-document
+---
+
+# My New Document
+
+Your content here...
+```
+
+## Best Practices
+
+### Clear Titles
+
+Use descriptive titles that clearly indicate the document's purpose.
+
+### Useful Descriptions
+
+Write concise descriptions for search and navigation.
+
+### Meaningful Slugs
+
+Create URL-friendly slugs that are easy to remember and share.
+
+### Relevant Tags
+
+Tag documents with relevant categories for better organization.
+
+### Logical Connections
+
+Connect documents in a way that guides readers through your content.
+
+## Using Components
+
+You can import and use React components in your MDX:
+
+```mdx
+import { Alert } from '@/components/alert'
+
+<Alert variant="info">
+  This is an informational alert!
+</Alert>
+```
+
+## Next Steps
+
+Explore [Document Connections](/docs/document-connections) or learn about [MDX Components](/docs/mdx-components).

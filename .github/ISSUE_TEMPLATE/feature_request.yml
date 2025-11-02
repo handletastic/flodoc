@@ -1,0 +1,79 @@
+name: Feature Request
+description: Suggest a new feature for Flodoc
+title: "[Feature]: "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature! Please check existing issues first to avoid duplicates.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve? Is it related to a frustration?
+      placeholder: I'm frustrated when...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like
+      placeholder: I would like to be able to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative solutions or features?
+      placeholder: I also thought about...
+
+  - type: dropdown
+    id: persona
+    attributes:
+      label: Primary User
+      description: Which user persona would benefit most?
+      options:
+        - Documentation Author
+        - Documentation Reader
+        - Documentation Maintainer
+        - Technical Educator
+        - Enterprise User
+        - All Users
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Suggested Priority
+      description: How important is this to you?
+      options:
+        - Critical (can't use Flodoc without it)
+        - High (would significantly improve experience)
+        - Medium (nice to have)
+        - Low (minor enhancement)
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: willing
+    attributes:
+      label: Contribution
+      description: Are you willing to help implement this?
+      options:
+        - label: I'm willing to submit a PR
+        - label: I can help with design/specifications
+        - label: I can help with testing
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context, mockups, or examples
+      placeholder: Screenshots, links to similar features, etc.

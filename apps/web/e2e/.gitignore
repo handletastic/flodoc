@@ -1,0 +1,12 @@
+# Playwright test results
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Visual regression baselines (commit these after review)
+# Uncomment to ignore:
+# tests/**/__screenshots__/
+
+# Coverage reports
+coverage/
+.nyc_output/

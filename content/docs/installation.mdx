@@ -1,0 +1,63 @@
+---
+title: Installation
+description: How to install and set up Flodoc
+slug: installation
+tags: [setup, beginner]
+connections:
+  - type: related
+    target: getting-started
+  - type: next
+    target: configuration
+---
+
+# Installation
+
+Get Flodoc up and running on your local machine.
+
+## Prerequisites
+
+Before you begin, ensure you have:
+
+- **Bun** v1.0 or higher
+- **Git** for version control
+- A code editor (VS Code recommended)
+
+## Quick Start
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/flodoc.git
+cd flodoc
+```
+
+2. Install dependencies:
+
+```bash
+bun install
+```
+
+3. Start the development server:
+
+```bash
+bun run dev
+```
+
+4. Open your browser to `http://localhost:5173`
+
+## Project Structure
+
+```
+flodoc/
+├── apps/
+│   └── web/          # Main application
+├── packages/
+│   ├── ui/           # UI components
+│   └── types/        # Shared types
+└── content/
+    └── docs/         # Your documentation
+```
+
+## Next Steps
+
+Configure your [project settings](/docs/configuration) or start [creating documents](/docs/creating-documents).

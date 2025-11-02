@@ -1,0 +1,87 @@
+---
+title: Document Connections
+description: Understanding and using document connections
+slug: document-connections
+tags: [tutorial, advanced]
+connections:
+  - type: prerequisite
+    target: basic-concepts
+  - type: related
+    target: creating-documents
+---
+
+# Document Connections
+
+Document connections are the heart of Flodoc's visual documentation system.
+
+## Connection Types
+
+### Prerequisite
+
+Use for documents that should be read before the current document:
+
+```yaml
+connections:
+  - type: prerequisite
+    target: foundational-document
+```
+
+### Next
+
+Suggest the logical next document in a learning path:
+
+```yaml
+connections:
+  - type: next
+    target: next-step-document
+```
+
+### Related
+
+Link to documents on related topics:
+
+```yaml
+connections:
+  - type: related
+    target: related-topic
+```
+
+### See Also
+
+Reference additional resources:
+
+```yaml
+connections:
+  - type: seealso
+    target: supplementary-material
+```
+
+## Visualizing Connections
+
+All connections appear in the Flow Graph view, where you can:
+
+- See the entire documentation structure
+- Navigate between connected documents
+- Identify learning paths
+- Find related content quickly
+
+## Connection Strategy
+
+When planning connections:
+
+1. **Start with prerequisites** - What should readers know first?
+2. **Define clear next steps** - Where should they go next?
+3. **Add related content** - What else might be relevant?
+4. **Include additional resources** - What might be helpful?
+
+## Graph Views
+
+The Flow Graph supports different visualization modes:
+
+- **Knowledge Graph**: Shows all bidirectional relationships
+- **Navigation Tree**: Displays hierarchical structure
+- **Learning Path**: Highlights sequential progression
+
+## Next Steps
+
+This is an advanced topic. Review [Basic Concepts](/docs/basic-concepts) or explore [Creating Documents](/docs/creating-documents).

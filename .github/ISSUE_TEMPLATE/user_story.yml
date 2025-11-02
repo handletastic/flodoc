@@ -1,0 +1,130 @@
+name: User Story
+description: Create a user story for development
+title: "[Story]: "
+labels: ["user-story", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to create a formal user story for the development team.
+
+  - type: input
+    id: story-id
+    attributes:
+      label: Story ID
+      description: User story ID (e.g., US-016)
+      placeholder: US-XXX
+    validations:
+      required: true
+
+  - type: textarea
+    id: story
+    attributes:
+      label: User Story
+      description: The user story in standard format
+      placeholder: |
+        As a [persona]
+        I want [goal]
+        So that [benefit]
+    validations:
+      required: true
+
+  - type: dropdown
+    id: persona
+    attributes:
+      label: Persona
+      description: Which persona is this for?
+      options:
+        - Documentation Author
+        - Documentation Reader
+        - Documentation Maintainer
+        - Technical Educator
+        - Enterprise Team Member
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: Story priority
+      options:
+        - Critical
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+
+  - type: dropdown
+    id: size
+    attributes:
+      label: Story Points / Size
+      description: Estimated size
+      options:
+        - XS (1-2 hours)
+        - S (half day)
+        - M (1-2 days)
+        - L (3-5 days)
+        - XL (1-2 weeks)
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: Specific, testable criteria
+      placeholder: |
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+        - [ ] Criterion 3
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context & Background
+      description: Why is this story important?
+      placeholder: Provide context for this story
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: What does this depend on? What does it block?
+      placeholder: |
+        Depends on: US-XXX, F-YYY
+        Blocks: US-ZZZ
+
+  - type: input
+    id: related-features
+    attributes:
+      label: Related Features
+      description: Related feature IDs (comma-separated)
+      placeholder: F-002, F-005
+
+  - type: textarea
+    id: technical
+    attributes:
+      label: Technical Notes
+      description: Implementation considerations
+      placeholder: Technical constraints or suggestions
+
+  - type: textarea
+    id: definition-of-done
+    attributes:
+      label: Definition of Done
+      description: How do we know this is complete?
+      placeholder: |
+        - [ ] Code complete and reviewed
+        - [ ] Tests written and passing
+        - [ ] Documentation updated
+        - [ ] Deployed to staging
+      value: |
+        - [ ] Code complete and peer reviewed
+        - [ ] Tests written and passing
+        - [ ] Acceptance criteria met
+        - [ ] Documentation updated
+        - [ ] No critical bugs
