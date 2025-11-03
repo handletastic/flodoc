@@ -1,7 +1,10 @@
-import { createFileRoute, Link, notFound } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link, notFound } from '@tanstack/router';
 import { useEffect } from 'react';
 import { loadDocument, getConnectedDocuments, mdxComponents } from '@/lib/mdx';
 import { TableOfContents } from '@/components/TableOfContents';
+import { Sidebar } from '@/components/Sidebar';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import type { DocumentFrontmatter, DocumentMetadata } from '@/lib/mdx';
 
 export const Route = createFileRoute('/docs/$slug')({
@@ -37,78 +40,90 @@ function DocumentPage() {
   const { frontmatter, Component } = doc;
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="lg:grid lg:grid-cols-[1fr_250px] lg:gap-8">
-        {/* Main Content */}
-        <article data-testid="doc-content" className="prose dark:prose-invert max-w-none">
-          {/* Document metadata */}
-          {frontmatter.description && (
-            <p data-testid="doc-description" className="text-lg text-muted-foreground -mt-2 mb-6">
-              {frontmatter.description}
-            </p>
-          )}
+    <div className="flex">
+      {/* Sidebar Navigation */}
+      <Sidebar />
 
-          {/* MDX Content */}
-          <Component components={mdxComponents} />
+      {/* Main Content Area */}
+      <main className="flex-1 min-w-0">
+        <div className="container mx-auto px-4 py-8">
+          {/* Breadcrumbs */}
+          <Breadcrumbs />
 
-          {/* Tags */}
-          {frontmatter.tags && frontmatter.tags.length > 0 && (
-            <div className="mt-8 flex gap-2 flex-wrap not-prose">
-              {frontmatter.tags.map((tag) => (
-                <span
-                  key={tag}
-                  data-testid="doc-tag"
-                  data-tag={tag}
-                  className="px-3 py-1 bg-secondary text-secondary-foreground rounded-md text-sm font-medium"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
+          {/* Content Grid: Article + TOC */}
+          <div className="lg:grid lg:grid-cols-[1fr_250px] lg:gap-8 mt-6">
+            {/* Article Content */}
+            <article data-testid="doc-content" className="prose dark:prose-invert max-w-none">
+              {/* Document metadata */}
+              {frontmatter.description && (
+                <p data-testid="doc-description" className="text-lg text-muted-foreground -mt-2 mb-6">
+                  {frontmatter.description}
+                </p>
+              )}
 
-          {/* Document Connections */}
-          {connections && connections.size > 0 && (
-            <div className="mt-12 pt-8 border-t not-prose">
-              <h2 className="text-xl font-bold mb-6">Related Documents</h2>
-              <div className="grid gap-6">
-                {Array.from(connections.entries()).map(([type, docs]) => (
-                  <div key={type}>
-                    <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-                      {type}
-                    </h3>
-                    <div className="space-y-2">
-                      {docs.map((connectedDoc) => (
-                        <Link
-                          key={connectedDoc.slug}
-                          to={`/docs/${connectedDoc.slug}`}
-                          data-testid="doc-connection"
-                          data-connection-type={type}
-                          className="block p-3 rounded-lg border border-border hover:border-primary hover:bg-accent transition-colors"
-                        >
-                          <div className="font-medium text-foreground">
-                            {connectedDoc.title}
-                          </div>
-                          {connectedDoc.description && (
-                            <div className="text-sm text-muted-foreground mt-1">
-                              {connectedDoc.description}
-                            </div>
-                          )}
-                        </Link>
-                      ))}
-                    </div>
+              {/* MDX Content */}
+              <Component components={mdxComponents} />
+
+              {/* Tags */}
+              {frontmatter.tags && frontmatter.tags.length > 0 && (
+                <div className="mt-8 flex gap-2 flex-wrap not-prose">
+                  {frontmatter.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      data-testid="doc-tag"
+                      data-tag={tag}
+                      className="px-3 py-1 bg-secondary text-secondary-foreground rounded-md text-sm font-medium"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {/* Document Connections */}
+              {connections && connections.size > 0 && (
+                <div className="mt-12 pt-8 border-t not-prose">
+                  <h2 className="text-xl font-bold mb-6">Related Documents</h2>
+                  <div className="grid gap-6">
+                    {Array.from(connections.entries()).map(([type, docs]) => (
+                      <div key={type}>
+                        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                          {type}
+                        </h3>
+                        <div className="space-y-2">
+                          {docs.map((connectedDoc) => (
+                            <Link
+                              key={connectedDoc.slug}
+                              to={`/docs/${connectedDoc.slug}`}
+                              data-testid="doc-connection"
+                              data-connection-type={type}
+                              className="block p-3 rounded-lg border border-border hover:border-primary hover:bg-accent transition-colors"
+                            >
+                              <div className="font-medium text-foreground">
+                                {connectedDoc.title}
+                              </div>
+                              {connectedDoc.description && (
+                                <div className="text-sm text-muted-foreground mt-1">
+                                  {connectedDoc.description}
+                                </div>
+                              )}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </article>
+                </div>
+              )}
+            </article>
 
-        {/* Table of Contents - Desktop: sticky sidebar, Mobile: collapsible */}
-        <aside className="lg:block mt-8 lg:mt-0">
-          <TableOfContents />
-        </aside>
-      </div>
+            {/* Table of Contents - Desktop: sticky sidebar, Mobile: collapsible */}
+            <aside className="lg:block mt-8 lg:mt-0">
+              <TableOfContents />
+            </aside>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
