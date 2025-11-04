@@ -1,0 +1,368 @@
+---
+title: API Reference - [Component/Module Name]
+description: Complete API documentation for [Component/Module]
+slug: api-reference-name
+tags: [api, reference, documentation]
+connections:
+  - type: seealso
+    target: related-api
+---
+
+# API Reference: [Component/Module Name]
+
+{/* API references are technical documentation of interfaces, methods, and properties */}
+
+Complete API documentation for [Component/Module]. This reference covers all available methods, properties, and configuration options.
+
+## Overview
+
+**Module**: `[module-name]`
+**Version**: `[version]`
+**Status**: `[stable|beta|experimental]`
+
+Brief description of what this API provides and its main use cases.
+
+## Installation
+
+```bash
+npm install [package-name]
+# or
+yarn add [package-name]
+```
+
+## Quick Start
+
+```javascript
+import { Component } from '[package-name]';
+
+// Basic usage example
+const instance = new Component({
+  option: 'value'
+});
+```
+
+## Class: `ClassName`
+
+Main class description and purpose.
+
+### Constructor
+
+#### `new ClassName(options)`
+
+Creates a new instance.
+
+**Parameters:**
+
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `options` | `Object` | Yes | - | Configuration object |
+| `options.property1` | `string` | No | `'default'` | Description of property |
+| `options.property2` | `number` | No | `100` | Description of property |
+| `options.callback` | `Function` | No | `null` | Callback function |
+
+**Returns:** `ClassName` - A new instance
+
+**Example:**
+
+```javascript
+const instance = new ClassName({
+  property1: 'custom',
+  property2: 200,
+  callback: (data) => console.log(data)
+});
+```
+
+### Properties
+
+#### `instance.propertyName`
+
+- **Type**: `string | number`
+- **Read-only**: `false`
+- **Default**: `'default value'`
+
+Description of what this property does and when to use it.
+
+**Example:**
+
+```javascript
+console.log(instance.propertyName); // 'current value'
+instance.propertyName = 'new value';
+```
+
+#### `instance.anotherProperty`
+
+- **Type**: `boolean`
+- **Read-only**: `true`
+
+Another property description.
+
+### Methods
+
+#### `instance.methodName(param1, param2)`
+
+Method description and purpose.
+
+**Parameters:**
+
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `param1` | `string` | Yes | - | First parameter |
+| `param2` | `Object` | No | `{}` | Options object |
+| `param2.option` | `boolean` | No | `true` | Specific option |
+
+**Returns:** `Promise<ResultType>` - Description of what's returned
+
+**Throws:**
+- `TypeError` - When parameter is invalid
+- `Error` - When operation fails
+
+**Example:**
+
+```javascript
+try {
+  const result = await instance.methodName('value', {
+    option: false
+  });
+  console.log(result);
+} catch (error) {
+  console.error('Operation failed:', error);
+}
+```
+
+#### `instance.anotherMethod()`
+
+**Returns:** `void`
+
+Description of this method.
+
+**Example:**
+
+```javascript
+instance.anotherMethod();
+```
+
+### Events
+
+#### Event: `'eventName'`
+
+Emitted when [condition occurs].
+
+**Payload:**
+
+```typescript
+{
+  property1: string;
+  property2: number;
+  timestamp: Date;
+}
+```
+
+**Example:**
+
+```javascript
+instance.on('eventName', (payload) => {
+  console.log('Event received:', payload);
+});
+```
+
+#### Event: `'error'`
+
+Emitted when an error occurs.
+
+**Payload:** `Error`
+
+**Example:**
+
+```javascript
+instance.on('error', (error) => {
+  console.error('Error occurred:', error);
+});
+```
+
+## Static Methods
+
+### `ClassName.staticMethod(param)`
+
+Static method description.
+
+**Parameters:**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `param` | `any` | Yes | Parameter description |
+
+**Returns:** `ResultType`
+
+**Example:**
+
+```javascript
+const result = ClassName.staticMethod(value);
+```
+
+## Types
+
+### `TypeName`
+
+```typescript
+interface TypeName {
+  property1: string;
+  property2: number;
+  optional?: boolean;
+  nested: {
+    value: string;
+  };
+}
+```
+
+Description of when and how to use this type.
+
+### `AnotherType`
+
+```typescript
+type AnotherType = 'option1' | 'option2' | 'option3';
+```
+
+## Configuration
+
+### Configuration Object
+
+Complete configuration options:
+
+```typescript
+interface Configuration {
+  // Required options
+  required: string;
+
+  // Optional with defaults
+  optional?: number; // Default: 100
+
+  // Advanced options
+  advanced?: {
+    setting1: boolean; // Default: true
+    setting2: string;  // Default: 'auto'
+  };
+}
+```
+
+**Example:**
+
+```javascript
+const config = {
+  required: 'value',
+  optional: 200,
+  advanced: {
+    setting1: false,
+    setting2: 'manual'
+  }
+};
+```
+
+## Error Handling
+
+### Error Types
+
+#### `CustomError`
+
+Thrown when [specific condition].
+
+**Properties:**
+- `name`: `'CustomError'`
+- `message`: Error description
+- `code`: Error code (e.g., `'ERR_INVALID_INPUT'`)
+
+**Example:**
+
+```javascript
+try {
+  // Operation that might fail
+} catch (error) {
+  if (error.code === 'ERR_INVALID_INPUT') {
+    // Handle specific error
+  }
+}
+```
+
+## Examples
+
+### Basic Usage
+
+```javascript
+// Simple example
+const simple = new ClassName({ property1: 'value' });
+simple.methodName('input');
+```
+
+### Advanced Usage
+
+```javascript
+// Complex scenario
+const advanced = new ClassName({
+  property1: 'custom',
+  property2: 500,
+  callback: async (data) => {
+    await processData(data);
+  }
+});
+
+advanced.on('eventName', handleEvent);
+
+const result = await advanced.methodName('input', {
+  option: true
+});
+```
+
+### With Error Handling
+
+```javascript
+// Production-ready example
+try {
+  const instance = new ClassName(config);
+
+  instance.on('error', (error) => {
+    logger.error('Instance error:', error);
+  });
+
+  const result = await instance.methodName('input');
+  return result;
+} catch (error) {
+  // Handle initialization or method errors
+  console.error('Failed:', error.message);
+  throw error;
+}
+```
+
+## Best Practices
+
+- [Best practice 1]
+- [Best practice 2]
+- [Performance consideration]
+- [Security note]
+
+## Migration Guide
+
+### From v1.x to v2.x
+
+**Breaking Changes:**
+
+- `oldMethod()` → `newMethod()`
+- `oldProperty` removed, use `newProperty` instead
+
+**Migration Steps:**
+
+1. [Step 1]
+2. [Step 2]
+
+## Browser Support
+
+| Browser | Minimum Version |
+|---------|----------------|
+| Chrome  | 90+            |
+| Firefox | 88+            |
+| Safari  | 14+            |
+| Edge    | 90+            |
+
+## See Also
+
+- [Related API reference]
+- [Integration guide]
+- [Tutorial using this API]
