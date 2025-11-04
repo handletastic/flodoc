@@ -10,6 +10,11 @@ import { remarkCodeMeta } from './src/lib/remark-code-meta'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Base path for GitHub Pages
+  // For custom domain: use '/'
+  // For repository pages: use '/repository-name/'
+  base: process.env.VITE_BASE_PATH || '/',
+
   plugins: [
     TanStackRouterVite({
       routesDirectory: './src/routes',
@@ -55,5 +60,15 @@ export default defineConfig({
       '@flodoc/ui': path.resolve(__dirname, '../../packages/ui/src'),
       '@flodoc/types': path.resolve(__dirname, '../../packages/types/src'),
     },
+  },
+  build: {
+    // Output directory for production build
+    outDir: 'dist',
+    // Generate source maps for debugging
+    sourcemap: true,
+    // Optimize build
+    minify: 'terser',
+    // Chunk size warnings
+    chunkSizeWarningLimit: 1000,
   },
 })
