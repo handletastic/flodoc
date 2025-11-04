@@ -1,0 +1,311 @@
+---
+title: Code Examples
+description: Examples showcasing enhanced code block features
+slug: code-examples
+tags: [examples, code]
+connections:
+  - type: related
+    target: getting-started
+---
+
+# Enhanced Code Block Examples
+
+This document showcases the enhanced code block features (F-008).
+
+## Basic Code Block with Language Badge
+
+```javascript
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+
+const message = greet('World');
+console.log(message);
+```
+
+## Code Block with Filename
+
+```typescript filename="src/utils/math.ts"
+export function add(a: number, b: number): number {
+  return a + b;
+}
+
+export function multiply(a: number, b: number): number {
+  return a * b;
+}
+```
+
+## Code Block with Line Highlighting
+
+```tsx highlightLines="2,4-6"
+import React from 'react';
+import { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+  return <button onClick={() => setCount(count + 1)}>Count: {count}</button>;
+}
+```
+
+## Code Block with Filename and Line Highlighting
+
+```python filename="app.py" highlightLines="1,5-7"
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+@app.route('/api/hello')
+def hello():
+    return jsonify(message='Hello, World!')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+## Inline Code
+
+You can also use inline code like `const x = 42` or `import React from 'react'` within your text.
+
+## Multiple Languages
+
+### JavaScript
+
+```javascript filename="script.js"
+const items = [1, 2, 3, 4, 5];
+const doubled = items.map(x => x * 2);
+console.log(doubled);
+```
+
+### TypeScript
+
+```typescript filename="types.ts" highlightLines="1-3"
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+function getUser(id: string): User {
+  // Implementation
+}
+```
+
+### JSX/TSX
+
+```tsx filename="Button.tsx"
+interface ButtonProps {
+  label: string;
+  onClick: () => void;
+  variant?: 'primary' | 'secondary';
+}
+
+export function Button({ label, onClick, variant = 'primary' }: ButtonProps) {
+  return (
+    <button className={`btn btn-${variant}`} onClick={onClick}>
+      {label}
+    </button>
+  );
+}
+```
+
+### JSON
+
+```json filename="package.json" highlightLines="2-4"
+{
+  "name": "my-project",
+  "version": "1.0.0",
+  "description": "A sample project",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  }
+}
+```
+
+### Shell/Bash
+
+```bash filename="deploy.sh" highlightLines="3,5"
+#!/bin/bash
+
+echo "Building application..."
+npm run build
+
+echo "Deploying to server..."
+scp -r dist/* user@server:/var/www/
+```
+
+### CSS
+
+```css filename="styles.css"
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.button {
+  background: #007bff;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+}
+```
+
+## Complex Example
+
+Here's a more complex React component with multiple features:
+
+```tsx filename="src/components/DataTable.tsx" highlightLines="12-14,22-24"
+import React, { useState, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+
+interface DataTableProps<T> {
+  data: T[];
+  columns: Column<T>[];
+  onRowClick?: (row: T) => void;
+}
+
+export function DataTable<T>({ data, columns, onRowClick }: DataTableProps<T>) {
+  const [sortBy, setSortBy] = useState<string | null>(null);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
+  const sortedData = useMemo(() => {
+    if (!sortBy) return data;
+
+    return [...data].sort((a, b) => {
+      const aVal = a[sortBy];
+      const bVal = b[sortBy];
+
+      if (sortOrder === 'asc') {
+        return aVal > bVal ? 1 : -1;
+      } else {
+        return aVal < bVal ? 1 : -1;
+      }
+    });
+  }, [data, sortBy, sortOrder]);
+
+  return (
+    <table className="data-table">
+      <thead>
+        <tr>
+          {columns.map(col => (
+            <th key={col.key} onClick={() => handleSort(col.key)}>
+              {col.label}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {sortedData.map((row, idx) => (
+          <tr key={idx} onClick={() => onRowClick?.(row)}>
+            {columns.map(col => (
+              <td key={col.key}>{col.render(row)}</td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+```
+
+## Long Code Block
+
+Here's a longer example to test scrolling and line numbers:
+
+```typescript filename="src/lib/api.ts"
+import axios from 'axios';
+
+const API_BASE_URL = process.env.VITE_API_URL || 'http://localhost:3000';
+
+interface ApiResponse<T> {
+  data: T;
+  status: number;
+  message?: string;
+}
+
+class ApiClient {
+  private baseURL: string;
+  private token: string | null = null;
+
+  constructor(baseURL: string) {
+    this.baseURL = baseURL;
+  }
+
+  setToken(token: string) {
+    this.token = token;
+  }
+
+  private getHeaders(): Record<string, string> {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+
+    if (this.token) {
+      headers['Authorization'] = `Bearer ${this.token}`;
+    }
+
+    return headers;
+  }
+
+  async get<T>(endpoint: string): Promise<ApiResponse<T>> {
+    const response = await axios.get(`${this.baseURL}${endpoint}`, {
+      headers: this.getHeaders(),
+    });
+
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  }
+
+  async post<T>(endpoint: string, data: any): Promise<ApiResponse<T>> {
+    const response = await axios.post(`${this.baseURL}${endpoint}`, data, {
+      headers: this.getHeaders(),
+    });
+
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  }
+
+  async put<T>(endpoint: string, data: any): Promise<ApiResponse<T>> {
+    const response = await axios.put(`${this.baseURL}${endpoint}`, data, {
+      headers: this.getHeaders(),
+    });
+
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  }
+
+  async delete<T>(endpoint: string): Promise<ApiResponse<T>> {
+    const response = await axios.delete(`${this.baseURL}${endpoint}`, {
+      headers: this.getHeaders(),
+    });
+
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  }
+}
+
+export const api = new ApiClient(API_BASE_URL);
+```
+
+## Features Summary
+
+All code blocks now include:
+
+1. **Copy Button**: Click to copy code to clipboard with visual feedback
+2. **Line Numbers**: Sequential line numbering for easy reference
+3. **Line Highlighting**: Highlight specific lines using `highlightLines="1,3-5"` syntax
+4. **Filename Display**: Show filename above code block with `filename="path/to/file.ts"`
+5. **Language Badge**: Automatic language detection and display
+6. **Syntax Highlighting**: Powered by rehype-pretty-code
+7. **Responsive Design**: Works on mobile and desktop
+8. **Dark Mode Support**: Adapts to theme changes
+9. **Accessibility**: Keyboard navigation and screen reader support

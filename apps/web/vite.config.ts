@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm'
 import remarkFrontmatter from 'remark-frontmatter'
 import rehypePrettyCode from 'rehype-pretty-code'
 import path from 'path'
+import { remarkCodeMeta } from './src/lib/remark-code-meta'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -15,8 +16,36 @@ export default defineConfig({
       generatedRouteTree: './src/routeTree.gen.ts',
     }),
     mdx({
-      remarkPlugins: [remarkGfm, remarkFrontmatter],
-      rehypePlugins: [rehypePrettyCode],
+      remarkPlugins: [remarkGfm, remarkFrontmatter, remarkCodeMeta],
+      rehypePlugins: [
+        [
+          rehypePrettyCode,
+          {
+            // Configure rehype-pretty-code
+            theme: {
+              dark: 'github-dark',
+              light: 'github-light',
+            },
+            keepBackground: false,
+            // Parse custom meta attributes (filename, highlightLines)
+            onVisitLine(node: any) {
+              // Prevent lines from collapsing
+              if (node.children.length === 0) {
+                node.children = [{ type: 'text', value: ' ' }];
+              }
+            },
+            onVisitHighlightedLine(node: any) {
+              // Add class to highlighted lines
+              node.properties.className = node.properties.className || [];
+              node.properties.className.push('highlighted');
+            },
+            onVisitHighlightedChars(node: any) {
+              // Add class to highlighted chars
+              node.properties.className = ['highlighted-chars'];
+            },
+          },
+        ],
+      ],
     }),
     react(),
   ],

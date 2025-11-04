@@ -28,6 +28,7 @@
         "remark-frontmatter": "^5.0.0",
         "remark-gfm": "^4.0.0",
         "tailwind-merge": "^2.6.0",
+        "unist-util-visit": "^5.0.0",
       },
       "devDependencies": {
         "@eslint/js": "^9.36.0",

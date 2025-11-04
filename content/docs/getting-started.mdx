@@ -23,6 +23,29 @@ Flodoc is a documentation application that uses react-flow to visualize connecti
 - **TanStack Router** for seamless navigation
 - **Git** for version control and collaboration
 
+## Quick Start
+
+Here's a simple example to get you started:
+
+```javascript
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+
+const message = greet('World');
+console.log(message);
+```
+
+## Installation
+
+Install Flodoc with your package manager:
+
+```bash filename="terminal"
+npm install flodoc
+# or
+bun install flodoc
+```
+
 ## Key Features
 
 - 📝 Write documentation in MDX format
@@ -31,6 +54,39 @@ Flodoc is a documentation application that uses react-flow to visualize connecti
 - 🎨 Rich components and interactive examples
 - 🌙 Dark mode support
 - 📱 Responsive design
+
+## Creating Your First Document
+
+Create a new MDX file with frontmatter:
+
+```markdown filename="docs/my-first-doc.mdx" highlightLines="1-5"
+---
+title: My First Document
+description: Getting started with Flodoc
+slug: my-first-doc
+---
+
+# My First Document
+
+Welcome to your first Flodoc document!
+```
+
+## TypeScript Support
+
+Flodoc has full TypeScript support:
+
+```typescript filename="types.ts" highlightLines="2-4"
+interface DocumentMetadata {
+  title: string;
+  description: string;
+  slug: string;
+  tags?: string[];
+}
+
+function loadDocument(slug: string): DocumentMetadata {
+  // Implementation here
+}
+```
 
 ## Next Steps
 

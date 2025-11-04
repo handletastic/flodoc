@@ -18,22 +18,23 @@
     "test:e2e:report": "cd e2e && npx playwright show-report"
   },
   "dependencies": {
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "@tanstack/react-router": "^1.86.6",
-    "@tanstack/react-query": "^5.62.21",
-    "@tanstack/react-table": "^8.20.6",
+    "@mdx-js/rollup": "^3.1.0",
     "@tanstack/react-form": "^0.37.0",
+    "@tanstack/react-query": "^5.62.21",
+    "@tanstack/react-router": "^1.86.6",
+    "@tanstack/react-table": "^8.20.6",
     "@xyflow/react": "^12.3.10",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "tailwind-merge": "^2.6.0",
+    "gray-matter": "^4.0.3",
     "lucide-react": "^0.468.0",
-    "@mdx-js/rollup": "^3.1.0",
-    "remark-gfm": "^4.0.0",
-    "remark-frontmatter": "^5.0.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "rehype-pretty-code": "^0.14.0",
-    "gray-matter": "^4.0.3"
+    "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.0",
+    "tailwind-merge": "^2.6.0",
+    "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
