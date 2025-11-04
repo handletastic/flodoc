@@ -55,21 +55,32 @@ export async function getAllTemplates(): Promise<TemplateMetadata[]> {
   const modules = import.meta.glob('/templates/*.mdx', {
     query: '?raw',
     import: 'default',
+    eager: true,
   });
+
+  console.log('[getAllTemplates] Found modules:', Object.keys(modules));
+  console.log('[getAllTemplates] Total module count:', Object.keys(modules).length);
+  console.log('[getAllTemplates] Template configs available:', Object.keys(TEMPLATE_CONFIGS));
 
   const templates: TemplateMetadata[] = [];
 
-  for (const [path, importFn] of Object.entries(modules)) {
+  for (const [path, _content] of Object.entries(modules)) {
     const fileName = path.split('/').pop()?.replace('.mdx', '') || '';
+    console.log(`[getAllTemplates] Processing: path=${path}, fileName=${fileName}`);
     const config = TEMPLATE_CONFIGS[fileName];
 
     if (config) {
+      console.log(`[getAllTemplates] ✓ Added template: ${fileName}`);
       templates.push({
         ...config,
         filePath: path,
       });
+    } else {
+      console.log(`[getAllTemplates] ✗ No config for: ${fileName}`);
     }
   }
+
+  console.log('[getAllTemplates] Returning', templates.length, 'templates');
 
   // Sort templates by a predefined order
   const order = ['guide', 'tutorial', 'api-reference', 'changelog', 'faq'];

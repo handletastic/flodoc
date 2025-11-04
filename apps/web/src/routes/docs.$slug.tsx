@@ -1,5 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { createFileRoute, Link, notFound } from '@tanstack/router';
+import { createFileRoute, Link, notFound } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { loadDocument, getConnectedDocuments, mdxComponents } from '@/lib/mdx';
 import { TableOfContents } from '@/components/TableOfContents';
