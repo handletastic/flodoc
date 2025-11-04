@@ -7,14 +7,13 @@ import {
   useNodesState,
   useEdgesState,
   addEdge,
-  Connection,
-  Node,
-  Edge,
   Panel,
 } from '@xyflow/react';
+import type { Connection, Node } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { DocumentMetadata } from '@/lib/mdx/types';
-import { buildGraphData, GraphLayout } from '@/lib/graph/builder';
+import type { DocumentMetadata } from '@/lib/mdx/types';
+import { buildGraphData } from '@/lib/graph/builder';
+import type { GraphLayout } from '@/lib/graph/builder';
 import { GraphControls } from './graph/GraphControls';
 import { GraphLegend } from './graph/GraphLegend';
 import { useNavigate } from '@tanstack/react-router';

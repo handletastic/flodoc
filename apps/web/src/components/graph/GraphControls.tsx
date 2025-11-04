@@ -1,4 +1,4 @@
-import { ViewMode } from '@/components/DocumentGraph';
+import type { ViewMode } from '@/components/DocumentGraph';
 import { useReactFlow } from '@xyflow/react';
 
 interface GraphControlsProps {

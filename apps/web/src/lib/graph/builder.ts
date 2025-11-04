@@ -1,6 +1,7 @@
-import { Node, Edge, MarkerType } from '@xyflow/react';
-import { DocumentMetadata } from '@/lib/mdx/types';
-import { ViewMode } from '@/components/DocumentGraph';
+import { MarkerType } from '@xyflow/react';
+import type { Node, Edge } from '@xyflow/react';
+import type { DocumentMetadata } from '@/lib/mdx/types';
+import type { ViewMode } from '@/components/DocumentGraph';
 
 export type GraphLayout = 'force' | 'tree' | 'path';
 
@@ -56,29 +57,24 @@ function buildEdges(documents: DocumentMetadata[], viewMode: ViewMode): Edge[] {
   const edges: Edge[] = [];
 
   documents.forEach((doc) => {
-    // Get connections from frontmatter
-    const connections = doc.frontmatter?.connections || {};
+    // Get connections from document
+    const connections = doc.connections || [];
 
-    // Add edges for prerequisites
-    if (connections.prerequisites) {
-      connections.prerequisites.forEach((prereqSlug: string) => {
-        edges.push(createEdge(prereqSlug, doc.slug, 'prerequisite'));
-      });
-    }
-
-    // Add edges for related documents
-    if (connections.related) {
-      connections.related.forEach((relatedSlug: string) => {
-        edges.push(createEdge(doc.slug, relatedSlug, 'related'));
-      });
-    }
-
-    // Add edges for examples
-    if (connections.examples) {
-      connections.examples.forEach((exampleSlug: string) => {
-        edges.push(createEdge(doc.slug, exampleSlug, 'example'));
-      });
-    }
+    // Process each connection based on type
+    connections.forEach((conn) => {
+      switch (conn.type) {
+        case 'prerequisite':
+          edges.push(createEdge(conn.target, doc.slug, 'prerequisite'));
+          break;
+        case 'next':
+          edges.push(createEdge(doc.slug, conn.target, 'example'));
+          break;
+        case 'related':
+        case 'seealso':
+          edges.push(createEdge(doc.slug, conn.target, 'related'));
+          break;
+      }
+    });
   });
 
   // For tree and path layouts, add hierarchical edges if no connections exist
@@ -207,7 +203,7 @@ function calculateForcePosition(index: number, total: number): { x: number; y: n
 /**
  * Calculate position for tree layout (hierarchical)
  */
-function calculateTreePosition(index: number, total: number): { x: number; y: number } {
+function calculateTreePosition(index: number, _total: number): { x: number; y: number } {
   const itemsPerLevel = 4;
   const level = Math.floor(index / itemsPerLevel);
   const positionInLevel = index % itemsPerLevel;
@@ -221,7 +217,7 @@ function calculateTreePosition(index: number, total: number): { x: number; y: nu
 /**
  * Calculate position for path layout (sequential)
  */
-function calculatePathPosition(index: number, total: number): { x: number; y: number } {
+function calculatePathPosition(index: number, _total: number): { x: number; y: number } {
   const spacing = 300;
 
   // Create a winding path

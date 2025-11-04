@@ -46,14 +46,16 @@ export function Navigation() {
           className="hidden md:flex gap-6 shrink-0"
         >
           <Link
-            to="/docs/getting-started"
+            to="/docs/$slug"
+            params={{ slug: 'getting-started' }}
             className="hover:underline"
             activeProps={{ className: 'text-primary font-medium' }}
           >
             Docs
           </Link>
           <Link
-            to="/flow/knowledge-graph"
+            to="/flow/$view"
+            params={{ view: 'knowledge-graph' }}
             className="hover:underline"
             activeProps={{ className: 'text-primary font-medium' }}
           >
@@ -157,7 +159,8 @@ export function Navigation() {
             {/* Menu Links - Touch-friendly */}
             <nav className="flex flex-col p-4 space-y-2">
               <Link
-                to="/docs/getting-started"
+                to="/docs/$slug"
+                params={{ slug: 'getting-started' }}
                 onClick={closeMobileMenu}
                 className="px-4 py-3 text-base hover:bg-accent rounded-md transition-colors"
                 activeProps={{ className: 'text-primary font-medium bg-accent' }}
@@ -165,7 +168,8 @@ export function Navigation() {
                 Docs
               </Link>
               <Link
-                to="/flow/knowledge-graph"
+                to="/flow/$view"
+                params={{ view: 'knowledge-graph' }}
                 onClick={closeMobileMenu}
                 className="px-4 py-3 text-base hover:bg-accent rounded-md transition-colors"
                 activeProps={{ className: 'text-primary font-medium bg-accent' }}

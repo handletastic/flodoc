@@ -13,13 +13,15 @@ function Index() {
       </p>
       <div className="flex gap-4">
         <Link
-          to="/docs/getting-started"
+          to="/docs/$slug"
+          params={{ slug: 'getting-started' }}
           className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
         >
           View Documentation
         </Link>
         <Link
-          to="/flow/knowledge-graph"
+          to="/flow/$view"
+          params={{ view: 'knowledge-graph' }}
           className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/90 transition-colors"
         >
           View Flow Graph

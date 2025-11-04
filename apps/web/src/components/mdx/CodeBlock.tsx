@@ -238,8 +238,8 @@ export function Pre({
   filename,
   highlightLines,
   showLineNumbers = true,
-  ...props
-}: React.HTMLAttributes<HTMLPreElement> & {
+}: Omit<React.HTMLAttributes<HTMLPreElement>, 'children'> & {
+  children?: React.ReactNode;
   filename?: string;
   highlightLines?: string;
   showLineNumbers?: boolean;

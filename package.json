@@ -26,6 +26,9 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "typescript": "^5.3.3"
+    "@types/mdast": "^4.0.4",
+    "@types/mdx": "^2.0.13",
+    "typescript": "^5.3.3",
+    "unified": "^11.0.5"
   }
 }

@@ -13,7 +13,8 @@ import type { DocumentFrontmatter, DocumentMetadata } from './types';
  */
 export async function getAllDocuments(): Promise<DocumentMetadata[]> {
   // Use Vite's glob import to get all MDX files
-  const modules = import.meta.glob('/content/docs/*.mdx', {
+  // Using relative path from the apps/web/src/lib/mdx directory
+  const modules = import.meta.glob('../../../../../content/docs/*.mdx', {
     query: '?raw',
     import: 'default',
   });
@@ -56,11 +57,11 @@ export async function loadDocument(slug: string): Promise<{
   try {
     // Try to import the MDX file
     // We need to dynamically import both the raw content and the component
-    const modules = import.meta.glob('/content/docs/*.mdx', {
+    const modules = import.meta.glob('../../../../../content/docs/*.mdx', {
       eager: false,
     });
 
-    const rawModules = import.meta.glob('/content/docs/*.mdx', {
+    const rawModules = import.meta.glob('../../../../../content/docs/*.mdx', {
       query: '?raw',
       import: 'default',
       eager: false,

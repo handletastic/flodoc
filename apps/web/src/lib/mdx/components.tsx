@@ -9,7 +9,6 @@ import { Link } from '@tanstack/react-router';
 import type { ComponentPropsWithoutRef } from 'react';
 
 type HeadingProps = ComponentPropsWithoutRef<'h1'>;
-type ParagraphProps = ComponentPropsWithoutRef<'p'>;
 type AnchorProps = ComponentPropsWithoutRef<'a'>;
 type CodeProps = ComponentPropsWithoutRef<'code'>;
 type PreProps = ComponentPropsWithoutRef<'pre'>;

@@ -1,7 +1,7 @@
 import { Link, useRouterState } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { getAllDocuments } from '../lib/mdx/loader';
-import { DocumentMetadata } from '../lib/mdx/types';
+import type { DocumentMetadata } from '../lib/mdx/types';
 import { useState, useEffect } from 'react';
 
 interface SidebarProps {
@@ -126,7 +126,8 @@ export function Sidebar({ className = '' }: SidebarProps) {
                   {docs.map((doc) => (
                     <li key={doc.slug}>
                       <Link
-                        to={`/docs/${doc.slug}`}
+                        to="/docs/$slug"
+                        params={{ slug: doc.slug }}
                         onClick={closeSidebar}
                         className={`
                           block px-4 py-3 min-h-[44px]

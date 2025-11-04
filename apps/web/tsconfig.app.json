@@ -24,7 +24,8 @@
       "@flodoc/types": ["../../packages/types/src"],
       "@flodoc/test-utils": ["../../packages/test-utils/src"],
       "@flodoc/test-utils/*": ["../../packages/test-utils/src/*"],
-      "@flodoc/playwright-config": ["../../packages/playwright-config"]
+      "@flodoc/playwright-config": ["../../packages/playwright-config"],
+      "@content/*": ["../../content/*"]
     },
 
     /* Linting */
