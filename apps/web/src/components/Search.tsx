@@ -5,7 +5,7 @@ import { getAllDocuments } from '../lib/mdx/loader';
 import { DocumentMetadata } from '../lib/mdx/types';
 
 /**
- * Search component with keyboard shortcuts
+ * Search component with keyboard shortcuts and mobile-first responsive design
  *
  * Features:
  * - Client-side search with basic string matching
@@ -14,6 +14,9 @@ import { DocumentMetadata } from '../lib/mdx/types';
  * - Escape to close
  * - Click outside to close
  * - Search term highlighting
+ * - Mobile-optimized input (16px font to prevent zoom on iOS)
+ * - Touch-friendly result items (44px height)
+ * - Responsive results dropdown
  */
 export function Search() {
   const [query, setQuery] = useState('');
@@ -127,9 +130,9 @@ export function Search() {
   const shortcutHint = isMac ? '⌘K' : 'Ctrl+K';
 
   return (
-    <div className="relative flex-1 max-w-md">
+    <div className="relative w-full">
       {/* Search Icon */}
-      <div className="absolute left-3 top-1/2 -translate-y-1/2" data-testid="search-icon">
+      <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" data-testid="search-icon">
         <svg
           className="w-4 h-4 text-muted-foreground"
           fill="none"
@@ -145,7 +148,7 @@ export function Search() {
         </svg>
       </div>
 
-      {/* Search Input */}
+      {/* Search Input - Mobile optimized */}
       <input
         ref={inputRef}
         type="search"
@@ -153,30 +156,38 @@ export function Search() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onFocus={handleInputFocus}
-        placeholder={`Search documentation... ${shortcutHint}`}
+        placeholder="Search docs..."
         className="
-          w-full pl-10 pr-4 py-2
+          w-full h-11 pl-10 pr-4
           border rounded-md
           bg-background
           focus:outline-none focus:ring-2 focus:ring-primary
-          text-sm
+          text-base
         "
+        style={{ fontSize: '16px' }} // Prevent iOS zoom
       />
 
-      {/* Search Results */}
+      {/* Keyboard shortcut hint - Hidden on mobile */}
+      <div className="hidden md:block absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+        <kbd className="text-xs text-muted-foreground border px-2 py-0.5 rounded">
+          {shortcutHint}
+        </kbd>
+      </div>
+
+      {/* Search Results - Mobile optimized */}
       {isOpen && query.trim() && (
         <div
           ref={resultsRef}
           data-testid="search-results"
           className="
-            absolute top-full mt-2 w-full
+            absolute top-full mt-2 left-0 right-0
             bg-background border rounded-md shadow-lg
-            max-h-96 overflow-y-auto
+            max-h-[60vh] md:max-h-96 overflow-y-auto
             z-50
           "
         >
           {searchResults.length > 0 ? (
-            <ul className="py-2">
+            <ul className="py-1">
               {searchResults.map((doc, index) => (
                 <li key={doc.slug}>
                   <Link
@@ -185,21 +196,22 @@ export function Search() {
                     data-testid="search-result-item"
                     data-highlighted={index === selectedIndex}
                     className={`
-                      block px-4 py-3 hover:bg-accent
+                      block px-4 py-3 min-h-[44px]
+                      hover:bg-accent
                       transition-colors
                       ${index === selectedIndex ? 'bg-accent' : ''}
                     `}
                   >
-                    <div className="font-medium text-sm">
+                    <div className="font-medium text-sm md:text-base">
                       <HighlightedText text={doc.title} query={query} />
                     </div>
                     {doc.description && (
-                      <div className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                      <div className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
                         <HighlightedText text={doc.description} query={query} />
                       </div>
                     )}
                     {doc.tags && doc.tags.length > 0 && (
-                      <div className="flex gap-2 mt-2">
+                      <div className="flex gap-2 mt-2 flex-wrap">
                         {doc.tags.slice(0, 3).map((tag) => (
                           <span
                             key={tag}

@@ -18,14 +18,15 @@ interface TableOfContentsProps {
 }
 
 /**
- * Table of Contents Component (F-015)
+ * Table of Contents Component with Mobile-First Responsive Design
  *
- * Auto-generates TOC from document H2-H4 headings with features:
+ * Features:
  * - Auto-generation from H2-H4 headings
  * - Active section highlighting
  * - Smooth scrolling to sections
- * - Sticky/fixed position on desktop
- * - Collapsible on mobile
+ * - Desktop: Sticky sidebar, always visible
+ * - Mobile: Collapsible with touch-friendly toggle (44px)
+ * - Touch-friendly links (min 40px height)
  */
 export function TableOfContents({ className }: TableOfContentsProps) {
   const [headings, setHeadings] = useState<TocHeading[]>([]);
@@ -149,11 +150,11 @@ export function TableOfContents({ className }: TableOfContentsProps) {
       aria-label="Table of Contents"
       data-testid="table-of-contents"
     >
-      {/* Mobile Toggle Button */}
+      {/* Mobile Toggle Button - Touch-friendly 44px height */}
       <button
         onClick={toggleMenu}
         onKeyDown={handleToggleKeyDown}
-        className="lg:hidden w-full flex items-center justify-between px-4 py-3 text-sm font-medium bg-secondary text-secondary-foreground rounded-lg mb-2"
+        className="lg:hidden w-full flex items-center justify-between px-4 py-3 min-h-[44px] text-sm md:text-base font-medium bg-secondary text-secondary-foreground rounded-lg mb-2 hover:bg-secondary/80 transition-colors"
         aria-expanded={isOpen}
         aria-controls="toc-content"
         data-testid="toc-toggle"
@@ -161,12 +162,13 @@ export function TableOfContents({ className }: TableOfContentsProps) {
         <span>Table of Contents</span>
         <svg
           className={cn(
-            'w-4 h-4 transition-transform',
+            'w-5 h-5 transition-transform duration-200',
             isOpen && 'transform rotate-180'
           )}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -182,22 +184,22 @@ export function TableOfContents({ className }: TableOfContentsProps) {
         id="toc-content"
         className={cn(
           'space-y-1',
-          // Mobile: collapsible
+          // Mobile: collapsible, Desktop: always visible
           'lg:block',
-          isOpen ? 'block' : 'hidden'
+          isOpen ? 'block' : 'hidden lg:block'
         )}
-        aria-hidden={!isOpen ? 'true' : 'false'}
+        aria-hidden={!isOpen && 'true'}
         data-testid="toc-content"
       >
         {/* Desktop Title */}
         <div className="hidden lg:block mb-4">
-          <h3 className="text-sm font-semibold text-foreground">
+          <h3 className="text-sm font-semibold text-foreground px-2">
             On This Page
           </h3>
         </div>
 
-        {/* TOC Links */}
-        <ul className="space-y-2 text-sm">
+        {/* TOC Links - Touch-friendly on mobile */}
+        <ul className="space-y-1 text-sm md:text-base">
           {headings.map((heading) => {
             const isActive = activeId === heading.id;
             const indent = (heading.level - 2) * 12; // 0px for H2, 12px for H3, 24px for H4
@@ -208,8 +210,9 @@ export function TableOfContents({ className }: TableOfContentsProps) {
                   href={`#${heading.id}`}
                   onClick={(e) => handleLinkClick(e, heading.id)}
                   className={cn(
-                    'block py-1 px-2 rounded transition-colors',
+                    'block py-2 px-3 min-h-[40px] rounded-md transition-colors',
                     'hover:text-primary hover:bg-accent',
+                    'flex items-center',
                     isActive
                       ? 'text-primary font-medium bg-accent'
                       : 'text-muted-foreground'
@@ -218,7 +221,7 @@ export function TableOfContents({ className }: TableOfContentsProps) {
                   data-heading-level={heading.level}
                   aria-current={isActive ? 'true' : undefined}
                 >
-                  {heading.text}
+                  <span className="line-clamp-2">{heading.text}</span>
                 </a>
               </li>
             );
