@@ -30,7 +30,7 @@ export function DocumentGraph({ documents }: DocumentGraphProps) {
   const [showMinimap, setShowMinimap] = useState(true);
 
   // Build nodes and edges from documents based on view mode
-  const { nodes: initialNodes, edges: initialEdges } = useMemo(() => {
+  const { nodes: initialNodes, edges: initialEdges} = useMemo(() => {
     return buildGraphData(documents, viewMode);
   }, [documents, viewMode]);
 

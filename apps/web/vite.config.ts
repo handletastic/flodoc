@@ -52,6 +52,29 @@ function mdxRawLoader(): Plugin {
   };
 }
 
+// Custom plugin to help resolve React imports for MDX files outside the app directory
+function resolveReactForContent(): Plugin {
+  return {
+    name: 'resolve-react-for-content',
+    enforce: 'pre',
+
+    resolveId(source, importer) {
+      // If import is from content directory and trying to import react
+      if (importer?.includes('/content/docs/')) {
+        if (source === 'react/jsx-runtime') {
+          // Resolve to the actual jsx-runtime.js file
+          return path.resolve(__dirname, 'node_modules/react/jsx-runtime.js');
+        }
+        if (source === 'react/jsx-dev-runtime') {
+          // Resolve to the actual jsx-dev-runtime.js file
+          return path.resolve(__dirname, 'node_modules/react/jsx-dev-runtime.js');
+        }
+      }
+      return null;
+    },
+  };
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   // Base path for GitHub Pages
@@ -64,7 +87,9 @@ export default defineConfig({
       routesDirectory: './src/routes',
       generatedRouteTree: './src/routeTree.gen.ts',
     }),
+    resolveReactForContent(), // MUST come first to resolve React for content files
     mdxRawLoader(), // MUST come before MDX plugin
+    // MDX plugin MUST come before React plugin to transform MDX to JSX first
     mdx({
       remarkPlugins: [remarkGfm, remarkFrontmatter, remarkCodeMeta],
       rehypePlugins: [
@@ -96,9 +121,8 @@ export default defineConfig({
           },
         ],
       ],
-      // Provide JSX runtime for MDX compilation
+      // Use automatic JSX runtime (React 17+)
       jsxImportSource: 'react',
-      providerImportSource: undefined,
     }),
     react(),
   ],
@@ -107,7 +131,13 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
       '@flodoc/ui': path.resolve(__dirname, '../../packages/ui/src'),
       '@flodoc/types': path.resolve(__dirname, '../../packages/types/src'),
+      // Polyfill Node.js Buffer for browser
+      buffer: 'buffer/',
     },
+  },
+  define: {
+    // Define global Buffer for browser compatibility with gray-matter
+    global: 'globalThis',
   },
   build: {
     // Output directory for production build
@@ -119,6 +149,15 @@ export default defineConfig({
   },
   optimizeDeps: {
     // Ensure react/jsx-runtime is pre-bundled for dev
-    include: ['react/jsx-runtime'],
+    // Include buffer polyfill for gray-matter (frontmatter parser)
+    include: ['react/jsx-runtime', 'react', 'react-dom', 'buffer'],
+  },
+  server: {
+    // CRITICAL: Allow Vite to serve files outside the project root
+    // This enables import.meta.glob to access content directory in monorepo
+    fs: {
+      // Allow serving files from up to the monorepo root
+      allow: ['../..'],
+    },
   },
 })

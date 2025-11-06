@@ -5,25 +5,38 @@
  * Uses gray-matter for frontmatter parsing and dynamic imports for MDX components.
  */
 
+// Polyfill Buffer for gray-matter in browser environment
+import { Buffer } from 'buffer';
+if (typeof globalThis.Buffer === 'undefined') {
+  globalThis.Buffer = Buffer;
+}
+
 import matter from 'gray-matter';
 import type { DocumentFrontmatter, DocumentMetadata } from './types';
+
+// IMPORTANT: Vite's import.meta.glob requires static string literals at build time
+// The glob pattern MUST be a string literal, not a variable or template string
+// Pattern is relative from this file location: apps/web/src/lib/mdx/loader.ts
+// Going up to project root: ../../../../../
+// Then into content/docs: content/docs/*.mdx
 
 /**
  * Get all available MDX documents from the content directory
  */
 export async function getAllDocuments(): Promise<DocumentMetadata[]> {
   // Use Vite's glob import to get all MDX files
-  // Using relative path from the apps/web/src/lib/mdx directory
-  const modules = import.meta.glob('../../../../../content/docs/*.mdx', {
+  // CRITICAL: This must be a string literal for Vite to process at build time
+  const modules = import.meta.glob<string>('../../../../../content/docs/*.mdx', {
     query: '?raw',
     import: 'default',
+    eager: false,
   });
 
   const documents: DocumentMetadata[] = [];
 
   for (const [path, importFn] of Object.entries(modules)) {
     try {
-      const content = await importFn() as string;
+      const content = (await importFn()) as string;
       const { data } = matter(content);
 
       // Extract slug from filename if not in frontmatter
@@ -61,7 +74,7 @@ export async function loadDocument(slug: string): Promise<{
       eager: false,
     });
 
-    const rawModules = import.meta.glob('../../../../../content/docs/*.mdx', {
+    const rawModules = import.meta.glob<string>('../../../../../content/docs/*.mdx', {
       query: '?raw',
       import: 'default',
       eager: false,
@@ -76,7 +89,7 @@ export async function loadDocument(slug: string): Promise<{
       // Try to get raw content to check slug in frontmatter
       const rawImport = rawModules[path];
       if (rawImport) {
-        const rawContent = await rawImport() as string;
+        const rawContent = (await rawImport()) as string;
         const { data } = matter(rawContent);
         const fileSlug = (data.slug as string) || fileName;
 
