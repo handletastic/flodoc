@@ -1,6 +1,12 @@
 import type { EdgeProps } from '@xyflow/react';
 import { getSmoothStepPath } from '@xyflow/react';
 
+// Define edge style interface for type safety
+interface EdgeStyle {
+  stroke?: string;
+  strokeWidth?: number;
+}
+
 export function CustomEdge(props: EdgeProps) {
   const {
     id,
@@ -30,8 +36,9 @@ export function CustomEdge(props: EdgeProps) {
   });
 
   // Extract stroke color from style to apply as SVG attribute
-  const stroke = (style as any)?.stroke || '#6b7280';
-  const strokeWidth = (style as any)?.strokeWidth || 2;
+  const edgeStyle = style as EdgeStyle;
+  const stroke = edgeStyle?.stroke || '#6b7280';
+  const strokeWidth = edgeStyle?.strokeWidth || 2;
 
   return (
     <>

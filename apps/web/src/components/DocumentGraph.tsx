@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import {
   ReactFlow,
   Background,
@@ -45,15 +45,24 @@ export function DocumentGraph({ documents }: DocumentGraphProps) {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   // Update nodes and edges when view mode changes
-  useMemo(() => {
+  useEffect(() => {
     const { nodes: newNodes, edges: newEdges } = buildGraphData(documents, viewMode);
     setNodes(newNodes);
     setEdges(newEdges);
   }, [documents, viewMode, setNodes, setEdges]);
 
   // Update nodes when hover state changes
-  useMemo(() => {
-    if (!hoveredNodeId) return;
+  useEffect(() => {
+    if (!hoveredNodeId) {
+      // Reset all node styles when hover is cleared
+      setNodes((nds) =>
+        nds.map((node) => ({
+          ...node,
+          className: 'bg-background border-2 border-border hover:border-primary transition-colors',
+        }))
+      );
+      return;
+    }
 
     setNodes((nds) =>
       nds.map((node) => ({

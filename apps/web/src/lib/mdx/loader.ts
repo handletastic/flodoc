@@ -5,14 +5,31 @@
  * Uses gray-matter for frontmatter parsing and dynamic imports for MDX components.
  */
 
-// Polyfill Buffer for gray-matter in browser environment
+/**
+ * Polyfill Buffer for gray-matter library in browser environment
+ *
+ * IMPORTANT: gray-matter (used for frontmatter parsing) expects Node.js Buffer
+ * to be globally available. This polyfill enables browser compatibility.
+ *
+ * Side Effects: Modifies globalThis.Buffer
+ * Scope: Only applies if Buffer is not already defined (safe for SSR/Node)
+ * Alternative Considered: Using buffer-polyfill plugin, but direct import is more explicit
+ *
+ * Without this polyfill, gray-matter will throw:
+ * ReferenceError: Buffer is not defined
+ */
 import { Buffer } from 'buffer';
-if (typeof globalThis.Buffer === 'undefined') {
-  globalThis.Buffer = Buffer;
+if (typeof (globalThis as any).Buffer === 'undefined') {
+  (globalThis as any).Buffer = Buffer;
 }
 
 import matter from 'gray-matter';
-import type { DocumentFrontmatter, DocumentMetadata } from './types';
+import type { DocumentFrontmatter, DocumentMetadata, DocumentConnection } from './types';
+
+// Define MDX module type for dynamic imports
+interface MDXModule {
+  default: React.ComponentType;
+}
 
 // IMPORTANT: Vite's import.meta.glob requires static string literals at build time
 // The glob pattern MUST be a string literal, not a variable or template string
@@ -48,7 +65,7 @@ export async function getAllDocuments(): Promise<DocumentMetadata[]> {
         title: data.title as string,
         description: data.description as string | undefined,
         tags: data.tags as string[] | undefined,
-        connections: data.connections as any,
+        connections: data.connections as DocumentConnection[] | undefined,
         filePath: path,
       });
     } catch (error) {
@@ -107,7 +124,7 @@ export async function loadDocument(slug: string): Promise<{
     // Load both the raw content and the component
     const [rawContent, mdxModule] = await Promise.all([
       rawModules[matchedPath]() as Promise<string>,
-      modules[matchedPath]() as Promise<any>,
+      modules[matchedPath]() as Promise<MDXModule>,
     ]);
 
     // Parse frontmatter
