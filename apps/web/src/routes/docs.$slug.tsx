@@ -1,10 +1,9 @@
 import { createFileRoute, Link, notFound } from '@tanstack/react-router';
 import { useEffect } from 'react';
-import { loadDocument, getConnectedDocuments, mdxComponents } from '@/lib/mdx';
+import { loadDocument, getConnectedDocuments } from '@/lib/mdx';
 import { TableOfContents } from '@/components/TableOfContents';
 import { Sidebar } from '@/components/Sidebar';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
-import type { DocumentFrontmatter, DocumentMetadata } from '@/lib/mdx';
 
 export const Route = createFileRoute('/docs/$slug')({
   component: DocumentPage,
@@ -61,7 +60,7 @@ function DocumentPage() {
               )}
 
               {/* MDX Content */}
-              <Component components={mdxComponents} />
+              <Component />
 
               {/* Tags */}
               {frontmatter.tags && frontmatter.tags.length > 0 && (
@@ -93,7 +92,8 @@ function DocumentPage() {
                           {docs.map((connectedDoc) => (
                             <Link
                               key={connectedDoc.slug}
-                              to={`/docs/${connectedDoc.slug}`}
+                              to="/docs/$slug"
+                              params={{ slug: connectedDoc.slug }}
                               data-testid="doc-connection"
                               data-connection-type={type}
                               className="block p-3 rounded-lg border border-border hover:border-primary hover:bg-accent transition-colors"

@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { Link } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { getAllDocuments } from '../lib/mdx/loader';
-import { DocumentMetadata } from '../lib/mdx/types';
 
 /**
  * Search component with keyboard shortcuts and mobile-first responsive design
@@ -191,7 +190,8 @@ export function Search() {
               {searchResults.map((doc, index) => (
                 <li key={doc.slug}>
                   <Link
-                    to={`/docs/${doc.slug}`}
+                    to="/docs/$slug"
+                    params={{ slug: doc.slug }}
                     onClick={handleResultClick}
                     data-testid="search-result-item"
                     data-highlighted={index === selectedIndex}
