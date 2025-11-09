@@ -9,13 +9,14 @@ import {
   addEdge,
   Panel,
 } from '@xyflow/react';
-import type { Connection, Node } from '@xyflow/react';
+import type { Connection, Node, EdgeTypes } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import type { DocumentMetadata } from '@/lib/mdx/types';
 import { buildGraphData } from '@/lib/graph/builder';
 import type { GraphLayout } from '@/lib/graph/builder';
 import { GraphControls } from './graph/GraphControls';
 import { GraphLegend } from './graph/GraphLegend';
+import { CustomEdge } from './graph/CustomEdge';
 import { useNavigate } from '@tanstack/react-router';
 
 interface DocumentGraphProps {
@@ -24,10 +25,16 @@ interface DocumentGraphProps {
 
 export type ViewMode = 'knowledge-graph' | 'navigation-tree' | 'learning-path';
 
+// Define custom edge types
+const edgeTypes: EdgeTypes = {
+  smoothstep: CustomEdge,
+};
+
 export function DocumentGraph({ documents }: DocumentGraphProps) {
   const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<ViewMode>('knowledge-graph');
   const [showMinimap, setShowMinimap] = useState(true);
+  const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
 
   // Build nodes and edges from documents based on view mode
   const { nodes: initialNodes, edges: initialEdges} = useMemo(() => {
@@ -44,6 +51,20 @@ export function DocumentGraph({ documents }: DocumentGraphProps) {
     setEdges(newEdges);
   }, [documents, viewMode, setNodes, setEdges]);
 
+  // Update nodes when hover state changes
+  useMemo(() => {
+    if (!hoveredNodeId) return;
+
+    setNodes((nds) =>
+      nds.map((node) => ({
+        ...node,
+        className: node.id === hoveredNodeId
+          ? 'bg-background border-2 border-primary transition-colors highlighted'
+          : 'bg-background border-2 border-border hover:border-primary transition-colors',
+      }))
+    );
+  }, [hoveredNodeId, setNodes]);
+
   const onConnect = useCallback(
     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
     [setEdges]
@@ -56,6 +77,22 @@ export function DocumentGraph({ documents }: DocumentGraphProps) {
       navigate({ to: `/docs/${slug}` });
     },
     [navigate]
+  );
+
+  // Handle node hover enter
+  const onNodeMouseEnter = useCallback(
+    (_event: React.MouseEvent, node: Node) => {
+      setHoveredNodeId(node.id);
+    },
+    []
+  );
+
+  // Handle node hover leave
+  const onNodeMouseLeave = useCallback(
+    () => {
+      setHoveredNodeId(null);
+    },
+    []
   );
 
   // Get layout type for data attribute
@@ -79,14 +116,21 @@ export function DocumentGraph({ documents }: DocumentGraphProps) {
       <ReactFlow
         nodes={nodes}
         edges={edges}
+        edgeTypes={edgeTypes}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onNodeClick={onNodeClick}
-        fitView
+        onNodeMouseEnter={onNodeMouseEnter}
+        onNodeMouseLeave={onNodeMouseLeave}
+        defaultViewport={{ x: 0, y: 0, zoom: 1 }}
+        panOnDrag
+        panOnScroll
+        zoomOnScroll
+        zoomOnPinch
+        zoomOnDoubleClick
         minZoom={0.1}
         maxZoom={2}
-        defaultViewport={{ x: 0, y: 0, zoom: 1 }}
         className="bg-background"
       >
         <Background />
